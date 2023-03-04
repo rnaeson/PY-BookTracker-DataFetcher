@@ -1,0 +1,7 @@
+.virtenv
+.virtenv/*
+library.sqlite
+*.sqlite
+*.json
+quotes_*
+books_*
