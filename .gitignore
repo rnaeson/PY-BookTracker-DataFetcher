@@ -5,3 +5,11 @@ library.sqlite
 *.json
 quotes_*
 books_*
+OutPut/*
+Datasets/BookGenome/*
+Datasets/BookTracker/*
+Datasets/BookXng/*
+OutPut/BookGenome/*
+OutPut/BookTracker/*
+OutPut/BookXng/*
+
