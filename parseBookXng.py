@@ -135,15 +135,23 @@ def PersonalizeUsers(userObj):
             fieldNames.append(k)
 
         # Define CSV Header Row
-        csvHeader = ['USER_ID', 'LOCATION', 'AGE']
+        # csvHeader = ['USER_ID', 'LOCATION', 'AGE']
+        csvHeader = ['USER_ID', 'USER_AGE']
         csvData = []
-
+        
         for user in userObj:
+            userAge = int(user.get(fieldNames[2])) if isinstance(user.get(fieldNames[2]), int) else random.randint(18, 90)
             csvData.append({
-                csvHeader[0]: user.get(fieldNames[0]),
-                csvHeader[1]: user.get(fieldNames[1]),
-                csvHeader[2]: user.get(fieldNames[2])
+                csvHeader[0]: str(user.get(fieldNames[0])),
+                csvHeader[1]: int(user.get(fieldNames[1]))
             })
+
+#         for user in userObj:
+#             csvData.append({
+#                 csvHeader[0]: user.get(fieldNames[0]),
+#                 csvHeader[1]: user.get(fieldNames[1]),
+#                 csvHeader[2]: user.get(fieldNames[2])
+#             })
 
         # Open the File and start dumping the datas
         with open(OutputFile, "w", newline='') as userFile:
@@ -158,9 +166,9 @@ def PersonalizeUsers(userObj):
         log.error("An Unexpected errror occurred while attempting to write the personalize user file.")
 
 
-def PersonalizeRatings(ratingsObj):
+def PersonalizeInteractions(ratingsObj):
     """ Export an AWS Personalize Interactions CSV that can be used for item recommendations """
-    log.info("Creating AWS Personalize Ratings CSV")
+    log.info("Creating AWS Personalize Interactions CSV")
     try:   
         OutputFile = f"{os.path.join(BOOKXNG_OUTPUT_DIR, 'interactions.csv')}"
 
@@ -170,18 +178,19 @@ def PersonalizeRatings(ratingsObj):
             fieldNames.append(k)
 
         # Define CSV Header Row
-        csvHeader = ['USER_ID', 'ITEM_ID', 'EVENT_TYPE', 'EVENT_VALUE', 'TIMESTAMP']
+        # csvHeader = ['USER_ID', 'ITEM_ID', 'EVENT_TYPE', 'EVENT_VALUE', 'TIMESTAMP']
+        csvHeader = ['USER_ID', 'ITEM_ID', 'TIMESTAMP', 'EVENT_TYPE']
         csvData = []
 
         # For each object, structure the object accordingly and add a random timestamp.
         for rating in ratingsObj:
             csvData.append({
-                csvHeader[0]: rating.get(fieldNames[0]),
-                csvHeader[1]: rating.get(fieldNames[1]),
+                csvHeader[0]: str(rating.get(fieldNames[0])),
+                csvHeader[1]: str(rating.get(fieldNames[1])),
                 csvHeader[2]: int(FetchRandomDate()),
-                csvHeader[3]: "watch"
+                csvHeader[3]: str("watch")
             })
-        
+
 #         for rating in ratingsObj:
 #             csvData.append({
 #                 csvHeader[0]: rating.get(fieldNames[0]),
@@ -309,7 +318,7 @@ if __name__ == "__main__":
         ratingsCollection = CsVFileToDict(RATINGDATA, delimiter=";")
         print("\n")
         log.debug(f"{len(ratingsCollection)} book rating records loaded: --> \n{json.dumps(ratingsCollection[0], indent=4)}", True)
-        PersonalizeRatings(ratingsCollection)
+        PersonalizeInteractions(ratingsCollection)
         log.debug(f"{len(ratingsCollection)} book rating records have been output to {os.path.join(BOOKXNG_OUTPUT_DIR, 'ratings.csv')}", True)
         print("\n")
         """ {
