@@ -178,10 +178,18 @@ def PersonalizeRatings(ratingsObj):
             csvData.append({
                 csvHeader[0]: rating.get(fieldNames[0]),
                 csvHeader[1]: rating.get(fieldNames[1]),
-                csvHeader[2]: "Watch",
-                csvHeader[3]: rating.get(fieldNames[2]),
-                csvHeader[4]: FetchRandomDate()
+                csvHeader[2]: int(FetchRandomDate()),
+                csvHeader[3]: "watch"
             })
+        
+#         for rating in ratingsObj:
+#             csvData.append({
+#                 csvHeader[0]: rating.get(fieldNames[0]),
+#                 csvHeader[1]: rating.get(fieldNames[1]),
+#                 csvHeader[2]: "Watch",
+#                 csvHeader[3]: rating.get(fieldNames[2]),
+#                 csvHeader[4]: FetchRandomDate()
+#             })
 
         # Open the File and start dumping the datas
         with open(OutputFile, "w", newline='') as ratingsFile:
